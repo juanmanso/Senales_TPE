@@ -1,0 +1,30 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}		% Configuro la codificación
+\input{config.tex}				% Archivo con los comandos globales como Título y autores
+\input{preamble.tex}
+
+% Defino el path de los includegraphics
+\graphicspath{{./Figuras/}{../}}		% Directorio que contiene los graficos
+
+% Defino el path para los input de .tex y de .eps
+\makeatletter
+\def\input@path{{./Figuras/}{./Secciones/}{./Cover_page/}}
+\makeatother
+
+% Defino el path del listings
+\lstinputpath{../}
+
+
+\begin{document}
+		% Carátula (formal o simple,_formal o _simple respectivamente),
+		% Resumen e Índice (si es necesario configurar en config.tex) del informe
+		\input{cover_formal.tex}
+
+%	\setcounter{page}{1}
+	\section{Resolución de los ejercicios}
+		\input{ejercicios.tex}
+	
+	\section{Código fuente}
+%		\input{15_code.tex}
+\end{document}
