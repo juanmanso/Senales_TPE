@@ -1,0 +1,30 @@
+
+\pagebreak
+\section{Ejercicio 5} \label{ej5}
+	\begin{flushleft}
+		\textit{Desarrolle un programa que a partir del espectrograma de la señal de audio permita
+reconstruir la señal original. Grafique el error entre la señal original y la reconstruida.}
+	\end{flushleft}
+
+	\subsection{Implementación final}	
+	\lstinputlisting{../../rec_spec.m}
+
+	\subsection{Comparación}
+
+		\graficarPNG{0.35}{5a}{Espectrograma de la señal reconstruida sin compensación de ventanas.}{graf:rec_a}
+
+		De la Figura \ref{graf:rec_a}, se ve que las frecuencias de la reconstruida carecen de la definición de la original. En particular, en la zona de frecuecias medias, la reconstruida presenta más naranja que su contraparte que contiene sectores más azules y rojas (mayor exactitud).\\
+
+		La razón de esta diferencia es la utilización de ventanas. El proceso de seccionar una porción de la señal es equivalente a multiplicarla por un pulso de longitud finita. Por Fourier se sabe que la multiplicación de dos señales en tiempo, resulta en una convolución de sus transformadas en frecuencia. Así, de utilizar un pulso rectangular por ejemplo, se haría la convolución con una curva que no es una delta, alterando la señal (en el ejemplo, una función \textit{sinc}). Por lo tanto, al reconstruirla a partir de su transformada, la señal presenta impresición en el dominio de las frecuencias debido al ventaneo previo.\\
+
+		En particular, tomando como punto de comparación al tiempo \SI{30}{\s}, para las frecuencias de \SI{380}{\Hz} y \SI{1100}{\Hz} la diferencia es de aproximadamente 30\% como se ve en la Figura \ref{graf:dft_5b}.\\
+
+		\graficarPNG{0.35}{5-dft2}{DFT de las señales orginial y reconstruida a tiempo $t=\SI{30}{\s}$}{graf:dft_5b}
+
+		Al utilizar la ventana de \textit{Hamming}, se minimiza el lóbulo más próximo al fundamental, siendo éste muy angosto. Del mismo modo que con la ventana rectangular, la señal debe ser compensada del efecto de la ventana. Por lo tanto, en las líneas 18 y 26 del código de la función, se divide la ventana a concatenar por los coeficientes de la ventana de \textit{Hamming}. Este cambio logra una reconstrucción completa de la señal original. A continuación se presenta el espectrograma de la implementación final:\\
+
+		\graficarPNG{0.35}{5b}{Espectrograma de la señal reconstruida con compensación de ventanas.}{graf:rec}
+
+		Como se puede ver en la Figura \ref{graf:rec}, la reconstrucción mejora. En particular, al hacer la misma comparación en $t=\SI{30}{\s}$ (Figura \ref{graf:dft_5}) se comprueba que la reconstrucción es precisa.
+
+		\graficarPNG{0.35}{5-dft}{DFT de las señales orginial y reconstruida compensada a tiempo $t=\SI{30}{\s}$}{graf:dft_5}

@@ -1,0 +1,21 @@
+
+
+\section{Ejercicio 7} \label{ej7}
+	\begin{flushleft}
+		\textit{Ahora se busca reducir la duración del audio a la mitad para lo cual se debe decimar el
+espectrograma por columnas. Recuerde que para evitar el aliasing es necesario realizar el
+adecuado filtrado pasabajos.}
+	\end{flushleft}
+
+	\subsection{Implementación}
+
+	Para resolver este ejercicio, se realizó la misma rutina que la del Ejercicio \ref{ej4}	pero, al contar con los coeficientes de la transformada en el vector del \texttt{specgram()} no se requiere el pasaje a frecuencia ni el filtrado de dicho ejercicio (por la misma razón del ejercicio \ref{ej6}). Después de ello, se reconstruye con la función del Ejercicio \ref{ej5}.
+
+	\subsection{Comparación de espectrogramas}
+
+
+	\graficarPNG{0.35}{7}{Espectrograma de la señal resultante de la decimación de las columnas de S.}{graf:ej7}
+
+	Al igual que en el Ejercicio \ref{ej6}, el espectograma es similar al del Ejercicio \ref{ej5} exceptuando la longitud del mismo. Utilizando la nueva implementación que suaviza las uniones, el audio contiene los mismos problemas que el Ejercicio anterior.\\
+
+	Merece ser mencionado que no se realizó un filtrado pasabajos de la señal, porque la interpolación es de muestras con \emph{dft} predeterminada previamente. Otra propuesta interesante sería interpretar a las filas del espectrograma como señales individuales. Así se podría realizar la \emph{dft} de dichas señales y aplicar el filtro \emph{antialiasing}. Dado que el dichas señales no fueron muestreadas por \emph{Nyquist} y su posible dependencia con las ventanas y overlap utilizados, aplicar dicho método puede resultar erroneo. Sin embargo es interesante el enfoque de analizar las variaciones de amplitud de una ventana de frecuencias como una señal temporal ordinaria.

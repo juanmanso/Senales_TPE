@@ -1,0 +1,50 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}		% Configuro la codificación
+\input{config.tex}				% Archivo con los comandos globales como Título y autores
+\input{preamble.tex}
+
+% Defino el path de los includegraphics
+\graphicspath{{./Figuras/}}		% Directorio que contiene los graficos
+
+% Defino el path para los input de .tex y de .eps
+\makeatletter
+\def\input@path{{./Figuras/}{./Secciones/}{./Cover_page/}}
+\makeatother
+
+% Defino el path del listings
+\ifListings
+%% Cambiar el nombre de la carpeta si se utilizan Listings
+	\lstinputpath{../Secciones}
+\fi
+
+\providecommand{\graficarPNG}[4]{
+			\begin{figure}[h!]
+				\centering
+					\includegraphics[scale=#1]{#2}
+					\caption{#3}
+					\label{#4}
+			\end{figure}
+
+}
+
+
+
+\begin{document}
+		% Carátula (formal o simple,_formal o _simple respectivamente),
+		% Resumen e Índice (si es necesario configurar en config.tex) del informe
+		\input{cover_formal.tex}
+
+	\setcounter{page}{1}
+
+	\input{1_Ejercicio.tex}
+	\input{2_Ejercicio.tex}
+	\input{3_Ejercicio.tex}
+	\input{4_Ejercicio.tex}
+	\input{5_Ejercicio.tex}
+	\input{6_Ejercicio.tex}
+	\input{7_Ejercicio.tex}
+
+	\input{8_Conclusiones.tex}
+
+\end{document}

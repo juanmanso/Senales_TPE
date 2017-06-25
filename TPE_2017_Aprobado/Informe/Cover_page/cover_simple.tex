@@ -1,0 +1,44 @@
+
+
+% Configuro la carátula
+		\title{{\Large{\textbf{\myTitle}}} \\
+				\vspace{0.4cm}
+				\normalsize\underline{\textbf{\mySubtitle}} \\
+		\author{\small{\textsc{\mySubject}}}}
+		\date{\small{\myTimePeriod}}
+	\maketitle
+
+	\begin{tabbing}
+			\hspace{2cm} \MembersHeader
+			\CoverMembers
+	\end{tabbing}
+
+	\begin{abstract}
+%		\input{0_resumen.tex}
+	\end{abstract}	
+
+
+
+\ifKeywords
+	\begin{center}
+		\emph{Palabras Clave: \myKeywords}
+	\end{center}
+\fi
+
+
+
+\ifPagebreak
+	\pagebreak
+\fi
+	\ifIndex
+		\tableofcontents
+%		\listoffigures
+%		\listoftables
+	\fi
+
+\ifPagebreak
+	\pagebreak
+\fi
+
+
+

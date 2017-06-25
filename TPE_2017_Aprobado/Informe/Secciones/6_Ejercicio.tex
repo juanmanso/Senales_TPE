@@ -1,0 +1,55 @@
+
+
+\section{Ejercicio 6} \label{ej6}
+	\begin{flushleft}
+		\textit{Suponiendo que utilicen la función} specgram\textit{, cada columna contiene información del
+espectro para ese segmento de la señal. Con el objeto de duplicar la duración de la secuencia
+original interpole una columna cada dos utilizando la información de las filas. Luego utilizando
+el programa desarrollado en el punto anterior encuentre la nueva señal de audio que debería
+durar el doble de tiempo. Grafique su espectrograma y compárelo con el original.}
+	\end{flushleft}
+
+	\subsection{Implementación}
+
+		Para la interpolación, se utilizaron los mismos pasos del Ejercicio \ref{ej3} con la excepción de que se interpola la matriz resultante del \texttt{specgram()}. Luego, se reconstruye con la función \texttt{rec\_spec()} del Ejercicio \ref{ej5}.
+
+		\pagebreak
+	\subsection{Comparación de espectrogramas y modificación de la implementación}
+
+	\graficarPNG{0.35}{6}{Espectrograma de la señal resultante de la interpolación de las columnas de S.}{graf:ej6}
+
+	Como se ve en la Figura \ref{graf:ej6}, la interpolación de las columnas del espectrograma no altera las frecuencias de la señal. Este resultado tiene sentido, dado que al interpolar la señal con sus componentes en frecuencia determinadas, dichas frecuencias se mantienen constantes logrando que la señal original duplique su longitud. Al igual que en el Ejercicio \ref{ej3}, la diferencia de colores se debe a la escala que utiliza el \texttt{specgram()} para graficar.\\
+
+	\graficarPNG{0.35}{6ns}{Discontinuidad de la señal al expandir las columnas del espectograma y volver a tiempo.}{graf:ej6_no_suave}
+	Sin embargo, al escuchar dicho audio se encuentran ruidos impropios de la señal original. Haciendo énfasis en la señal temporal, se ve que la unión de las ventanas no es suave (Figura \ref{graf:ej6_no_suave}). La razón de este comportamiento indeseado es la interpolación de las columnas. Las nuevas columnas se transforman en tiempo como ventanas nuevas cuyos puntos iniciales y finales pueden diferir de los que se concatenarán después.\\
+
+	Es por eso que se propone expandir las columnas con la columna previa. Así se duplicaría el largo del audio concatenando ventanas con si mismas (y luego la última concatenaría suavemente con la siguiente ventana). Ésto mejora auditivamente la señal, dando un efecto de duración más evidente en vez del eco generado por la primer implementación. A pesar de esto, la curva sigue siendo discontinua persistiendo el ruido.\\
+
+	Se propone por lo tanto pedir que la unión sea continua y que la derivada de la misma también lo sea. Dicha implementación se presenta a continuación con su gráfico en la Figura \ref{graf:ej6_suave}:
+
+	\begin{lstlisting}
+for x=1:(rows-1)
+	concat=aux(x+1,noverlap+1:end)./window(noverlap+1:end);
+
+	for y=1:(length(concat)-1)
+		checkeo1=(concat(y)-output(end))/output(end);
+
+		if(-0.1<=checkeo1 && checkeo1<=0.1)
+			checkeo2=(concat(y+1)-concat(y))/(output(end)-output(end-1));
+
+			if(0.9<=checkeo2 && checkeo2<=1.1)
+				concat=[concat(y:end)];
+				break;
+			end
+		end
+	end
+	output=[output concat];
+end
+	\end{lstlisting}
+
+	\graficarPNG{0.35}{6s}{Mejora en la discontinuidad de la reconstrucción de la señal.}{graf:ej6_suave}
+
+	Como se puede ver en la Figura \ref{graf:ej6_suave}, la continuidad de la señal mejora considerablemente. Analizando diferentes uniones de ventanas de la señal (para comprobar la generalidad del método) se encontraron problemas como el de la Figura \ref{graf:ej6_suave_problema}. En dicho gráfico se ve que la señal tiene cierta suavidad en la unión, pero la senoide envolvente cambia de signo su pendiente. Dado que el método es básico, no se pretende obtener una señal perfecta, por lo tanto se pasa por alto este error.
+	\graficarPNG{0.35}{6sprob}{Problema al concatenar ventanas.}{graf:ej6_suave_problema}
+
+	Al utilizar el algoritmo descripto por el espectograma de \texttt{audio.wav}, mejora considerablemente la calidad del nuevo audio. Sin embargo, por los problemas de suavidad y cambio de pendientes, se encuentran momentos más ruidosos que otros. Puede deberse también a que el error en ciertas zonas es imperceptible para un oido no entrenado y en otros lo es. De todos modos, la nueva implementación mejora considerablemente al audio.

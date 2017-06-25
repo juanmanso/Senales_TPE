@@ -1,0 +1,42 @@
+
+
+\section{Ejercicio 4}	\label{ej4}
+	\begin{flushleft}
+	\textit{Reducir a la mitad la duración del fragmento musical utilizando el proceso de decimación.
+No está permitido usar las funciones de matlab/octave que implementan la decimación
+directamente. Recuerde que para evitar el aliasing es necesario realizar el adecuado filtrado
+pasabajos. Utilice alguno de los métodos de diseño explicados en la teórica especificando el
+criterio utilizado. Grafique el espectrograma de la nueva secuencia y compárela con la obtenida
+en el Ejercicio 2.}
+	\end{flushleft}
+
+	\subsection{Decimación}
+	Se recuerda que, cuando se decima por N una señal discreta que fue muestreada, al comprimir el espectro de frecuencias, la señal útil queda entre $-\pi/N$ y $\pi/N$ (en vez de $-\pi$,$\pi$). Todo lo demás tendrá aliasing al pasar por el conversor digital analógico (DAC). Por ende, como se pretende decimar por $N=2$, se aplica un pasabajos ideal entre $-\pi/2$ y $\pi/2$ (o en frecuencia $-F_S/4$, $F_S/4$). Dado que la función \texttt{fft()} da los valores entre 0 y $2\pi$, sólo se requiere eliminar desde $\pi/2$ hasta $\frac{3}{2}\pi$. Se utiliza el parámetro \texttt{'symmetric'} de la función \texttt{ifft()} para que sea posible reconstruir al poner ceros desde $\pi/2$ hasta $2\pi$ en el espectro de frecuencias.
+
+		A continuación se expone la implementación utilizada:
+		\begin{lstlisting}
+aux=audio;
+
+% Pasaje a frecuencia
+NFFT=2^nextpow2(length(aux));
+fft_mitad=fft(aux,NFFT);
+
+% Frecuencias menores y mayores a |Fs/4| ==> =0
+fft_mitad(fix(length(fft_mitad)/4)+1:end)=0;
+
+% Reconstruccion
+% Como se elimino desde 3/2*pi hasta 2*pi, queda asimetrica, por lo tanto
+% se utiliza el parametro 'symmetric' para solucionarlo.
+aux=ifft((fft_mitad),'symmetric');
+
+% Decimacion.
+mitad_audio=aux(1:2:end-1);
+mitad_audio=mitad_audio(1:round(length(audio_input)/2));
+		\end{lstlisting}
+
+
+	\subsection{Comparación de espectrogramas}
+
+	Como se sabe, al comprimir el dominio del tiempo, se expande el dominio de las frecuencias. Así, se ve en la Figura \ref{graf:ej4} compensando la frecuencia de muestreo, el eje de frecuencias se expande en 2 con respecto a la original (Figura \ref{graf:spec_ej2}).
+
+		\graficarPNG{0.35}{4bis}{Espectrograma de la señal decimada con frecuencia de muestreo compensada.}{graf:ej4}

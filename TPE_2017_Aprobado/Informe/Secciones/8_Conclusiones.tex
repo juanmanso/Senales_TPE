@@ -1,0 +1,6 @@
+
+\section{Conclusiones} 
+
+	Del análisis y resolución de los Ejercicios \ref{ej3} y \ref{ej4} se puede concluir que los métodos de expansión o decimación de muestras no son efectivos para variar la duración de señales. La razón principal es que la variación en la duración genera una variación en el espectro de frecuencias. A pesar de ello, estos métodos son útiles para compresión o expansión del tamaño de los archivos de audio. Si se modifica la frecuencia de muestreo del DAC de modo que la duración y frecuencias sean similares a la original, lo que se obtiene es una variación en el tamaño del archivo. Así, si la señal inicial fue sobremuestreada (es decir el espectro de la misma es de banda mucho más angosta que $F_S$), una decimación y reconstrucción apropiada mantendría la calidad previa del audio haciendo que éste pese menos.\\
+
+	Por el otro lado, el método propuesto por los Ejercicios \ref{ej6} y \ref{ej7} es más apropiado para variar la duración de la señal, manteniendo el espectro original. En estos casos, las diferencias numéricas son pequeñas pero auditivamente apreciables. Para mayor precisión haría falta recurrir a otros métodos como por ejemplo concatenar ventanas en el mismo valor y que éste sea 0 (método disponible en \emph{software} de edición de audio como \emph{Cubase} y \emph{Pro Tools}).

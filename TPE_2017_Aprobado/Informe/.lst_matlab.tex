@@ -1,0 +1,25 @@
+%% Configuración por default de los Listings de Latex
+
+	\definecolor{myGreen}{rgb}{0,0.6,0}
+	\definecolor{myGray}{rgb}{0.5,0.5,0.5}
+
+\lstset{language=Matlab,
+   keywords={break,case,catch,continue,else,elseif,end,for,function,
+      global,if,otherwise,persistent,return,switch,try,while},
+   basicstyle=\ttfamily\footnotesize,
+   keywordstyle=[1]\color{Blue},
+   commentstyle=\color{Red},
+   stringstyle=\color{Orange},
+   numbers=left,
+   numberstyle=\tiny\color{myGray},
+   numbersep=5pt,
+   stepnumber=1,
+   numbersep=10pt,
+   backgroundcolor=\color{White},
+   tabsize=4,
+   showspaces=false,
+   inputencoding=utf8,%
+   extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+   frame=single,	                 %% adds a frame around the code
+   rulecolor=\color{Black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+   showstringspaces=false}
